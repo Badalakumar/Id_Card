@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Users</title>
+
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f2f4f7;
+            margin: 0;
+            padding: 40px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        /* Top link */
+        .top-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            background: #007bff;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .top-link:hover {
+            background: #005fcc;
+        }
+
+        /* Table Style */
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 15px;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background: #f7f9fc;
+        }
+
+        /* Edit Button */
+        .edit-btn {
+            background: #28a745;
+            color: white;
+            padding: 7px 13px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .edit-btn:hover {
+            background: #1e7e34;
+        }
+
+        /* Download Button */
+        .download-btn {
+            display: block;
+            width: 180px;
+            margin: 30px auto;
+            padding: 12px;
+            background: #6c63ff;
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            transition: 0.25s ease;
+        }
+
+        .download-btn:hover {
+            background: #574feb;
+            transform: scale(1.03);
+        }
+    </style>
+
+</head>
+<body>
+
+<h2>All Users</h2>
+
+<a href="/" class="top-link">+ Add New User</a>
+
+<table>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Action</th>
+    </tr>
+
+    {% for u in users %}
+    <tr>
+        <td>{{ loop.index0 }}</td>
+        <td>{{ u.name }}</td>
+        <td>{{ u.id }}</td>
+        <td>
+            <a href="/editor?index={{ loop.index0 }}" class="edit-btn">Edit</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="/download_all" class="download-btn">Download All</a>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editor</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f0f0f0;
+    padding: 20px;
+}
+
+#canvas {
+    width: 600px;
+    height: 300px;
+    border: 2px solid black;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+}
+
+.draggable {
+    position: absolute;
+    background:transparent;
+    color:white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 4px;
+    cursor: grab;
+}
+
+#profile {
+    width: 120px;
+    height: 150px;
+    border-radius: 6px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+button {
+    padding: 10px 18px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    color: white;
+}
+
+#saveLayout { background: #0077ff; }
+#downloadAll { background: #28a745; }
+#downloadSingle { background: #ff5722; }
+
+button:hover {
+    opacity: 0.9;
+}
+</style>
+
+</head>
+<body>
+
+<h2>ID Card Editor</h2>
+
+<div id="canvas" style="background-image: url('{{ user.background }}')">
+
+    <img id="profile" class="draggable"
+        src="{{ user.profile }}"
+        style="top: {{ layout.profile.top }}px; left: {{ layout.profile.left }}px;">
+
+    <div class="draggable" id="name"
+        style="top: {{ layout.name.top }}px; left: {{ layout.name.left }}px;">
+        {{ user.name }}
+    </div>
+
+    <div class="draggable" id="email"
+        style="top: {{ layout.email.top }}px; left: {{ layout.email.left }}px;">
+        {{ user.email }}
+    </div>
+
+    <div class="draggable" id="phone"
+        style="top: {{ layout.phone.top }}px; left: {{ layout.phone.left }}px;">
+        {{ user.phone }}
+    </div>
+
+    <div class="draggable" id="idtxt"
+        style="top: {{ layout.id.top }}px; left: {{ layout.id.left }}px;">
+        {{ user.id }}
+    </div>
+
+    <div class="draggable" id="dept"
+        style="top: {{ layout.dept.top }}px; left: {{ layout.dept.left }}px;">
+        {{ user.dept }}
+    </div>
+
+</div>
+
+<br><br>
+
+<button id="saveLayout">Save Layout for All</button>
+
+<a href="/download_all">
+    <button id="downloadAll">Download All Cards</button>
+</a>
+
+<a href="/download_single?index={{ index }}">
+    <button id="downloadSingle">Download This Card</button>
+</a>
+
+<script>
+// ---------------------------
+//   DRAGGING FUNCTION
+// ---------------------------
+function drag(el) {
+    let offsetX, offsetY;
+
+    el.onmousedown = (e) => {
+        offsetX = e.clientX - el.offsetLeft;
+        offsetY = e.clientY - el.offsetTop;
+
+        document.onmousemove = (e2) => {
+            el.style.left = (e2.clientX - offsetX) + "px";
+            el.style.top = (e2.clientY - offsetY) + "px";
+        };
+
+        document.onmouseup = () => {
+            document.onmousemove = null;
+        };
+    };
+}
+
+document.querySelectorAll(".draggable").forEach(drag);
+
+// ---------------------------
+//     SAVE LAYOUT
+// ---------------------------
+document.getElementById("saveLayout").onclick = () => {
+    const layout = {
+        profile: getPos("profile"),
+        name: getPos("name"),
+        email: getPos("email"),
+        phone: getPos("phone"),
+        id: getPos("idtxt"),
+        dept: getPos("dept"),
+    };
+
+    fetch("/save_layout", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(layout)
+    })
+    .then(r => r.json())
+    .then(d => alert("Layout saved for all users!"));
+};
+
+function getPos(id) {
+    const el = document.getElementById(id);
+    return {
+        top: parseInt(el.style.top),
+        left: parseInt(el.style.left)
+    };
+}
+</script>
+
+</body>
+</html>

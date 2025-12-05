@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add User</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f3f3f3;
+            padding: 20px;
+        }
+        form {
+            width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin: auto;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            background: #0077ff;
+            border: none;
+            color: white;
+            font-size: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005fcc;
+        }
+    </style>
+</head>
+<body>
+
+<h2 align="center">Add User Details</h2>
+
+<form action="/add_user" method="POST" enctype="multipart/form-data">
+    
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="phone" placeholder="Phone" required>
+    <input type="text" name="uid" placeholder="User ID" required>
+    <input type="text" name="dept" placeholder="Department" required>
+
+    <label>Choose Background Image:</label>
+    <input type="file" name="background" accept="image/*">
+
+    <label>Choose Profile Image:</label>
+    <input type="file" name="profile" accept="image/*">
+
+    <button type="submit">Submit & Edit</button>
+</form>
+
+</body>
+</html>
